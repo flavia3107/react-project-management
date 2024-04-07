@@ -25,6 +25,7 @@ function App() {
 		const newProject = {...projectData, id: Math.random()};
 		return {
 			...prevState, 
+			selectedProjectId: undefined,
 			projects: [...prevState.projects, newProject]
 		};
 	});
@@ -32,7 +33,7 @@ function App() {
 
   return (
     <main className="h-screen my-8 flex gap-8">
-     <ProjectsSidebars onCreateNewProject={createNewProject}/>
+     <ProjectsSidebars onCreateNewProject={createNewProject} projects={projectState.projects}/>
 	 {content}
     </main>
   );
