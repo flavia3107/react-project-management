@@ -2,6 +2,7 @@ import NewProject from "./components/NewProject.jsx";
 import ProjectsSidebars from "./components/ProjectsSidebar.jsx";
 import NoProjectSelected from "./components/NoProjectSelected.jsx";
 import { useState } from 'react';
+import SelectedProject from "./components/SelectedProject.jsx";
 
 function App() {
   const [projectState, setProjectState] = useState({
@@ -13,7 +14,9 @@ function App() {
    setProjectState(prevState => ({...prevState, selectedProjectId: null}));
   }
 
-  let content;
+  const selectedProject = projectState.projects.find(project => project.id === projectState.selectedProjectId);
+  let content = <SelectedProject project={selectedProject} />;
+
   if(projectState.selectedProjectId === null){
     content = <NewProject onSave={handleAddProject} onCancel={handleCancel}/>
   } else if (projectState.selectedProjectId === undefined){
@@ -21,24 +24,31 @@ function App() {
   }
 
   function handleAddProject(projectData){
-	setProjectState(prevState => {
-		const newProject = {...projectData, id: Math.random()};
-		return {
-			...prevState, 
-			selectedProjectId: undefined,
-			projects: [...prevState.projects, newProject]
-		};
-	});
+    setProjectState(prevState => {
+      const newProject = {...projectData, id: Math.random()};
+      return {
+        ...prevState, 
+        selectedProjectId: undefined,
+        projects: [...prevState.projects, newProject]
+      };
+    });
   }
 
   function handleCancel(){
-	setProjectState(prevState => ({...prevState, selectedProjectId: undefined}))
+	  setProjectState(prevState => ({...prevState, selectedProjectId: undefined}))
+  }
+
+  function handleSelectProject(id){
+	  setProjectState(prevState => ({...prevState, selectedProjectId: id}))
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
-     <ProjectsSidebars onCreateNewProject={createNewProject} projects={projectState.projects}/>
-	 {content}
+      <ProjectsSidebars 
+      onCreateNewProject={createNewProject} 
+      onSelectProject={handleSelectProject}
+      projects={projectState.projects}/>
+      {content}
     </main>
   );
 }
