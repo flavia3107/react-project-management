@@ -12,22 +12,27 @@ function App() {
   });
 
   function handleAddTask(text){
-   setProjectState(prevState => {
-      const newTask = {
-          id:Math.random(),
-          text:text, 
-          projectId: prevState.selectedProjectId
+    if(text.trim()){
+      setProjectState(prevState => {
+        const newTask = {
+            id:Math.random(),
+            text:text, 
+            projectId: prevState.selectedProjectId
+          };
+      
+          return {
+          ...prevState, 
+          tasks: [...prevState.tasks, newTask]
         };
-     
-        return {
-        ...prevState, 
-        tasks: [...prevState.tasks, newTask]
-      };
-    });
+      });
+    }
   }
 
-  function handleDeleteTask(){
-
+  function handleDeleteTask(taskId){
+	  setProjectState(prevState => ({
+          ...prevState, 
+          tasks: prevState.tasks.filter(task => task.id !== taskId)
+        }));
   }
 
   function createNewProject(){
@@ -78,7 +83,8 @@ function App() {
       <ProjectsSidebars 
       onCreateNewProject={createNewProject} 
       onSelectProject={handleSelectProject}
-      projects={projectState.projects}/>
+      projects={projectState.projects}
+      selectedProjectId={projectState.selectedProjectId}/>
       {content}
     </main>
   );
