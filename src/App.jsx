@@ -7,15 +7,38 @@ import SelectedProject from "./components/SelectedProject.jsx";
 function App() {
   const [projectState, setProjectState] = useState({
     selectedProjectId: undefined,
-    projects: []
+    projects: [],
+    tasks: []
   });
+
+  function handleAddTask(text){
+   setProjectState(prevState => {
+      const newTask = {
+          id:Math.random(),
+          text:text, 
+          projectId: prevState.selectedProjectId
+        };
+     
+        return {
+        ...prevState, 
+        tasks: [...prevState.tasks, newTask]
+      };
+    });
+  }
+
+  function handleDeleteTask(){
+
+  }
 
   function createNewProject(){
    setProjectState(prevState => ({...prevState, selectedProjectId: null}));
   }
 
   const selectedProject = projectState.projects.find(project => project.id === projectState.selectedProjectId);
-  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject}/>;
+  let content = <SelectedProject project={selectedProject} 
+  onDelete={handleDeleteProject}
+  onAddTask={handleAddTask} onDeleteTask={handleDeleteTask} tasks={projectState.tasks}
+  />;
 
   if(projectState.selectedProjectId === null){
     content = <NewProject onSave={handleAddProject} onCancel={handleCancel}/>
@@ -62,3 +85,7 @@ function App() {
 }
 
 export default App;
+
+/**
+ * Prop drilling => passing value from parent to nested component to nested component, like a chain
+ */
