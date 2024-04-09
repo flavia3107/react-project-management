@@ -95,3 +95,14 @@ export default App;
 /**
  * Prop drilling => passing value from parent to nested component to nested component, like a chain
  */
+
+/**
+ * TO DO
+ * 1. Overall styling
+ * 2. Store data in localstorage
+ * 3. Show list of projects in a main view -> Put the add button there
+ * 4. Options to view the list: grid or list
+ * 5. Better project details view
+ * 6. Open / close sidebar
+ * 7. Add some images as placeholders
+ */
